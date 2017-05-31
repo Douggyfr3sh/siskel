@@ -37,6 +37,7 @@ var Movies = Backbone.Collection.extend({
 
 });
 
+
 var AppView = Backbone.View.extend({
 
   events: {
