@@ -6,14 +6,13 @@ var Movie = Backbone.Model.extend({
 
   toggleLike: function() {
     // your code here
-    if (this.get('like')) {
+    if(this.get('like') === true) {
       this.set('like', false);
-    } else {
+    }
+    else {
       this.set('like', true);
     }
   }
-
-
 
 });
 
@@ -22,21 +21,17 @@ var Movies = Backbone.Collection.extend({
   model: Movie,
 
   initialize: function() {
-    // your code here
+    this.on('change', this.sort);
   },
 
   comparator: 'title',
 
   sortByField: function(field) {
-    // your code here
-    //apparently for collections we do not use .set and .get
-    //methods to avoid directly accessing
     this.comparator = field;
     this.sort();
   }
 
 });
-
 
 var AppView = Backbone.View.extend({
 
@@ -70,7 +65,7 @@ var MovieView = Backbone.View.extend({
                         </div>'),
 
   initialize: function() {
-    // your code here
+    this.model.on('change', this.render, this);
   },
 
   events: {
@@ -78,7 +73,7 @@ var MovieView = Backbone.View.extend({
   },
 
   handleClick: function() {
-    // your code here
+    this.model.toggleLike();
   },
 
   render: function() {
@@ -91,7 +86,8 @@ var MovieView = Backbone.View.extend({
 var MoviesView = Backbone.View.extend({
 
   initialize: function() {
-    // your code here
+    console.log(this.collection);
+    this.collection.on('sort', this.render, this);
   },
 
   render: function() {
